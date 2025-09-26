@@ -49,14 +49,18 @@ export const DoctorAPI = {
     return maybeNormalize(res.data);
   },
   update: async (id: number, payload: Partial<Doctor>): Promise<Doctor | null> => {
-    const res = await api.put(`/doctors/${id}`, {
-      name: payload.name,
-      npi: payload.npi ?? null,
-      phone: payload.phone ?? null,
-      specialty: payload.specialty ?? null,
-    });
-    return maybeNormalize(res.data);
-  },
+  // send only the fields your server expects
+  const body = {
+    name: payload.name,
+    npi: payload.npi ?? null,
+    phone: payload.phone ?? null,
+    specialty: payload.specialty ?? null,
+  };
+
+  // send PATCH instead of PUT
+  const res = await api.patch(`/doctors/${id}`, body);
+  return res.data ?? null; // handles 204 No Content
+},
   remove: async (id: number): Promise<void> => {
     await api.delete(`/doctors/${id}`);
   },

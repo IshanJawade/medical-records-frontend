@@ -1,18 +1,18 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReceptionistSchema, type ReceptionistForm } from "../schema";
+import { ReceptionsSchema, type ReceptionsForm } from "../schema";
 import { Stack, TextField } from "@mui/material";
 
 export default function ReceptionistFormCmp({
   defaultValues,
   onSubmit,
 }: {
-  defaultValues?: Partial<ReceptionistForm>;
-  onSubmit: (data: ReceptionistForm) => void | Promise<void>;
+  defaultValues?: Partial<ReceptionsForm>;
+  onSubmit: (data: ReceptionsForm) => void | Promise<void>;
 }) {
   const { register, handleSubmit, formState: { errors, isSubmitting } } =
-	useForm<ReceptionistForm>({
-	  resolver: zodResolver(ReceptionistSchema),
+	useForm<ReceptionsForm>({
+	  resolver: zodResolver(ReceptionsSchema),
 	  defaultValues,
 	});
 

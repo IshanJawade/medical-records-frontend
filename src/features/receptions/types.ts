@@ -1,4 +1,4 @@
-export type Receptionist = {
+export type Receptions = {
   id: number;
   name: string;
   phone?: string | null;

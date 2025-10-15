@@ -1,19 +1,3 @@
-// ##### Testing only: simple page to list receptionists as JSON #####
-// import { useEffect } from "react";
-// import { useReceptionists } from "../features/receptionists/hooks";
-
-// export default function ReceptionistsPage() {
-//   const q = useReceptionists();
-//   useEffect(() => {
-//     console.log("Receptionists hook:", q.status, q.data, q.error);
-//   }, [q.status, q.data, q.error]);
-
-//   if (q.isLoading) return <div>Loading…</div>;
-//   if (q.error) return <div style={{color:"crimson"}}>{(q.error as Error).message}</div>;
-//   return <pre>{JSON.stringify(q.data, null, 2)}</pre>;
-// }
-
-
 import { useMemo, useState } from "react";
 import {
   useMediaQuery, Table, TableHead, TableRow, TableCell, TableBody,
@@ -24,31 +8,31 @@ import { useTheme } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import ReceptionistFormCmp from "../features/receptionists/components/ReceptionForm";
-import { useReceptionists, useCreateReceptionist, useUpdateReceptionist, useDeleteReceptionist } from "../features/receptionists/hooks";
-import type { Receptionist } from "../features/receptionists/types";
-import { ReceptionistSchema, type ReceptionistForm } from "../features/receptionists/schema";
+import ReceptionistFormCmp from "../features/receptions/components/ReceptionForm";
+import { useReceptions, useCreateReceptions, useUpdateReceptions, useDeleteReceptions } from "../features/receptions/hooks";
+import type { Receptions } from "../features/receptions/types";
+import { ReceptionsSchema, type ReceptionsForm } from "../features/receptions/schema";
 
-export default function ReceptionistsPage() {
+export default function ReceptionsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { data, isLoading, error } = useReceptionists();
-  const createMut = useCreateReceptionist();
-  const updateMut = useUpdateReceptionist();
-  const deleteMut = useDeleteReceptionist();
+  const { data, isLoading, error } = useReceptions();
+  const createMut = useCreateReceptions();
+  const updateMut = useUpdateReceptions();
+  const deleteMut = useDeleteReceptions();
 
   const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState<Receptionist | null>(null);
+  const [editing, setEditing] = useState<Receptions | null>(null);
   const [snack, setSnack] = useState<{ type: "success" | "error"; msg: string } | null>(null);
-  const receptionists = useMemo(() => data ?? [], [data]);
+  const receptions = useMemo(() => data ?? [], [data]);
 
   const handleCreate = () => { setEditing(null); setOpen(true); };
-  const handleEdit = (doc: Receptionist) => { setEditing(doc); setOpen(true); };
+  const handleEdit = (doc: Receptions) => { setEditing(doc); setOpen(true); };
 
-  const handleSubmit = async (form: ReceptionistForm) => {
+  const handleSubmit = async (form: ReceptionsForm) => {
 	try {
-	  const payload = ReceptionistSchema.parse(form);
+	  const payload = ReceptionsSchema.parse(form);
 	  if (editing) {
 		await updateMut.mutateAsync({ id: editing.id, data: payload });
 		setSnack({ type: "success", msg: "Receptionist updated" });
@@ -63,13 +47,13 @@ export default function ReceptionistsPage() {
   };
 
   const handleDelete = async (id: number) => {
-	if (!confirm("Delete this receptionist?")) return;
+	if (!confirm("Delete this receptions?")) return;
 	try {
 	  await deleteMut.mutateAsync(id);
-	  setSnack({ type: "success", msg: "Receptionist deleted" });
+	  setSnack({ type: "success", msg: "Receptions deleted" });
 	} catch (e: any) {
 	  setSnack({ type: "error", msg: e.message || "Delete failed" });
-	}
+	}	
   };
 
   if (isLoading) {
@@ -86,13 +70,13 @@ export default function ReceptionistsPage() {
 	return (
 	  <Stack spacing={2}>
 		<Stack direction="row" justifyContent="space-between" alignItems="center">
-		  <h2 style={{ margin: 0 }}>Doctors</h2>
+		  <h2 style={{ margin: 0 }}>Receptions</h2>
 		  <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
 			New
 		  </Button>
 		</Stack>
 
-		{receptionists.map((d) => (
+		{receptions.map((d) => (
 		  <Card key={d.id}>
 			<CardContent>
 			  <Stack spacing={0.5}>
@@ -108,7 +92,7 @@ export default function ReceptionistsPage() {
 		  </Card>
 		))}
 
-		<ReceptionistsDialog
+		<ReceptionsDialog
 		  open={open}
 		  onClose={() => setOpen(false)}
 		  editing={editing}
@@ -134,9 +118,9 @@ export default function ReceptionistsPage() {
   return (
 	<>
 	  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-		<h2 style={{ margin: 0 }}>Doctors</h2>
+		<h2 style={{ margin: 0 }}>Receptions</h2>
 		<Button variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
-		  New Doctor
+		  New Reception
 		</Button>
 	  </Stack>
 
@@ -150,7 +134,7 @@ export default function ReceptionistsPage() {
 		  </TableRow>
 		</TableHead>
 		<TableBody>
-		  {receptionists.map((r) => (
+		  {receptions.map((r) => (
 			<TableRow key={r.id} hover>
 			  <TableCell>{r.name}</TableCell>
 			  <TableCell>{r.phone || "—"}</TableCell>
@@ -168,7 +152,7 @@ export default function ReceptionistsPage() {
 		</TableBody>
 	  </Table>
 
-	  <ReceptionistsDialog
+	  <ReceptionsDialog
 		open={open}
 		onClose={() => setOpen(false)}
 		editing={editing}
@@ -191,17 +175,17 @@ export default function ReceptionistsPage() {
 }
 
 // ---------- Dialog ----------
-function ReceptionistsDialog({
+function ReceptionsDialog({
   open, onClose, editing, onSubmit,
 }: {
   open: boolean;
   onClose: () => void;
-  editing: Receptionist | null;
-  onSubmit: (data: ReceptionistForm) => void | Promise<void>;
+  editing: Receptions | null;
+  onSubmit: (data: ReceptionsForm) => void | Promise<void>;
 }) {
   return (
 	<Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-	  <DialogTitle>{editing ? "Edit Receptionist" : "New Receptionist"}</DialogTitle>
+	  <DialogTitle>{editing ? "Edit Reception" : "New Reception"}</DialogTitle>
 	  <DialogContent dividers>
 		<ReceptionistFormCmp
 		  defaultValues={{

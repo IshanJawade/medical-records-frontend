@@ -14,7 +14,7 @@ function NavList({ onClick }: { onClick?: () => void }) {
         { to: "/dashboard", label: "Dashboard" },
         { to: "/doctors", label: "Doctors" },
         { to: "/patients", label: "Patients" },
-        { to: "/receptionists", label: "Receptionists" }
+        { to: "/receptions", label: "Receptions" }
       ].map(i => (
         <ListItemButton key={i.to} component={Link} to={i.to} onClick={onClick}>
           <ListItemText primary={i.label} />
@@ -54,8 +54,8 @@ export default function AppShell() {
           <Button color="inherit" component={Link} to="/patients" sx={{ display: { xs: "none", sm: "inline-flex" } }}>
             Patients
           </Button>
-          <Button color="inherit" component={Link} to="/receptionists" sx={{ display: { xs: "none", sm: "inline-flex" } }}>
-            Receptionists
+          <Button color="inherit" component={Link} to="/receptions" sx={{ display: { xs: "none", sm: "inline-flex" } }}>
+            Receptions
           </Button>
           <IconButton color="inherit" aria-label="Account">
             <AccountCircle />

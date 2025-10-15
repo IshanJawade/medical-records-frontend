@@ -1,4 +1,5 @@
 import { api } from "../../api/client";
+import type { Receptions } from "./types";
 
 export type Receptionist = {
   id: number;
@@ -9,7 +10,7 @@ export type Receptionist = {
   updatedAt?: string | null;
 };
 
-const normalize = (r: any): Receptionist => ({
+const normalize = (r: any): Receptions => ({
   id: r.id,
   name: r.name,
   phone: r.phone ?? null,
@@ -22,18 +23,18 @@ const unwrap = (d: any) =>
   Array.isArray(d) ? d : (d?.content ?? d?.data ?? d?.items ?? []);
 
 export const ReceptionAPI = {
-  list: async (): Promise<Receptionist[]> => {
+  list: async (): Promise<Receptions[]> => {
     const res = await api.get("/receptions");              
     if (import.meta.env.DEV) console.log("GET /receptions →", res.status, res.data);
     return unwrap(res.data).map(normalize);
   },
-  create: async (p: Partial<Receptionist>) => {
+  create: async (p: Partial<Receptions>) => {
     const res = await api.post("/receptions", {            
       name: p.name, phone: p.phone ?? null, email: p.email ?? null,
     });
     return res.data ? normalize(res.data) : null;
   },
-  update: async (id: number, p: Partial<Receptionist>) => {
+  update: async (id: number, p: Partial<Receptions>) => {
     const res = await api.patch(`/receptions/${id}`, {     
       name: p.name, phone: p.phone, email: p.email,
     });

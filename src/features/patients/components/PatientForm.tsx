@@ -13,7 +13,7 @@ export default function PatientFormCmp({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors , isSubmitting},
   } = useForm<PatientForm>({
     resolver: zodResolver(PatientSchema),
     defaultValues,
@@ -84,6 +84,7 @@ export default function PatientFormCmp({
           helperText={errors.zip?.message}
         />
       </Stack>
+      <input type="submit" hidden disabled={isSubmitting} />
     </form>
   );
 }

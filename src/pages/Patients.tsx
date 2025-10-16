@@ -72,7 +72,7 @@ export default function PatientsPage() {
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <h2 style={{ margin: 0 }}>Patients</h2>
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
-            New Patient
+            New 
           </Button>
         </Stack>
 

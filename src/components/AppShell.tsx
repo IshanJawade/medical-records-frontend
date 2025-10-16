@@ -14,7 +14,8 @@ function NavList({ onClick }: { onClick?: () => void }) {
         { to: "/dashboard", label: "Dashboard" },
         { to: "/doctors", label: "Doctors" },
         { to: "/patients", label: "Patients" },
-        { to: "/receptions", label: "Receptions" }
+        { to: "/receptions", label: "Receptions" },
+        { to: "/login", label: "Login" }
       ].map(i => (
         <ListItemButton key={i.to} component={Link} to={i.to} onClick={onClick}>
           <ListItemText primary={i.label} />
@@ -84,18 +85,15 @@ export default function AppShell() {
             <Button color="inherit" component={Link} to="/doctors">Doctors</Button>
             <Button color="inherit" component={Link} to="/patients">Patients</Button>
             <Button color="inherit" component={Link} to="/receptions">Receptions</Button>
-            <IconButton aria-label="Account" sx={{ color: "inherit" }}>
-              <AccountCircle />
-            </IconButton>
+            <Button aria-label="Account" variant="contained"  component={Link} to="/login">Login</Button>
           </Box>
 
           {/* Show account icon on mobile too (optional) */}
-          <IconButton
-            aria-label="Account"
-            sx={{ display: { xs: "inline-flex", sm: "none" }, color: "inherit" }}
-          >
-            <AccountCircle />
-          </IconButton>
+          <Button aria-label="Account" variant="contained"  
+            sx={{ display: { xs: "inline-flex ", sm: "none" }, color: "white", ml: "auto" }}
+            component={Link} to="/login">
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
 

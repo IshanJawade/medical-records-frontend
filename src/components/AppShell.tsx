@@ -29,35 +29,71 @@ export default function AppShell() {
 
   return (
     <>
-      <AppBar position="sticky">
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{ bgcolor: "#fff", color: "#000", borderBottom: "1px solid #eee" }}
+      >
         <Toolbar sx={{ gap: 1 }}>
+          {/* Mobile menu */}
           <IconButton
-            color="inherit"
             onClick={() => setOpen(true)}
-            sx={{ display: { xs: "inline-flex", sm: "none" } }}
+            sx={{ display: { xs: "inline-flex", sm: "none" }, color: "inherit" }}
             aria-label="Open navigation"
           >
             <MenuIcon />
           </IconButton>
 
-          <Box component={Link} to="/" sx={{ color: "#fff", textDecoration: "none", fontWeight: 700, mr: 2 }}>
+          {/* Brand */}
+          <Box
+            component={Link}
+            to="/"
+            sx={{ color: "inherit", textDecoration: "none", fontWeight: 700, mr: 2 }}
+          >
             MedPortal
           </Box>
 
-          <Box sx={{ flexGrow: 1, maxWidth: 520, display: { xs: "none", sm: "block" } }}>
-            <TextField fullWidth placeholder="Search" />
+          {/* Search */}
+          <Box sx={{ flex: 1, maxWidth: 520, display: { xs: "none", sm: "block" } }}>
+            <TextField
+              fullWidth
+              size="small"
+              placeholder="Search"
+              variant="outlined"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#1e63ff" },
+                  "&:hover fieldset": { borderColor: "#1e63ff" },
+                  "&.Mui-focused fieldset": { borderColor: "#1e63ff", borderWidth: 2 }
+                },
+                "& input": { color: "#000" },
+                "& input::placeholder": { color: "#666", opacity: 1 }
+              }}
+            />
           </Box>
 
-          <Button color="inherit" component={Link} to="/doctors" sx={{ display: { xs: "none", sm: "inline-flex" } }}>
-            Doctors
-          </Button>
-          <Button color="inherit" component={Link} to="/patients" sx={{ display: { xs: "none", sm: "inline-flex" } }}>
-            Patients
-          </Button>
-          <Button color="inherit" component={Link} to="/receptions" sx={{ display: { xs: "none", sm: "inline-flex" } }}>
-            Receptions
-          </Button>
-          <IconButton color="inherit" aria-label="Account">
+          {/* Right-aligned actions */}
+          <Box
+            sx={{
+              ml: "auto",
+              display: { xs: "none", sm: "flex" },
+              alignItems: "center",
+              gap: 1
+            }}
+          >
+            <Button color="inherit" component={Link} to="/doctors">Doctors</Button>
+            <Button color="inherit" component={Link} to="/patients">Patients</Button>
+            <Button color="inherit" component={Link} to="/receptions">Receptions</Button>
+            <IconButton aria-label="Account" sx={{ color: "inherit" }}>
+              <AccountCircle />
+            </IconButton>
+          </Box>
+
+          {/* Show account icon on mobile too (optional) */}
+          <IconButton
+            aria-label="Account"
+            sx={{ display: { xs: "inline-flex", sm: "none" }, color: "inherit" }}
+          >
             <AccountCircle />
           </IconButton>
         </Toolbar>
